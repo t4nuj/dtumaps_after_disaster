@@ -397,10 +397,16 @@ public class Mapper extends Fragment {
 
     public void addMarker(int i)
     {
+//        MarkerOptions m2 = new MarkerOptions().position(new LatLng(place[i].latitude,place[i].longitude)).title(place[i].title).snippet(String.format("%s,\r%s Floor\r", place[i].subtitle, place[i].floor));
         MarkerOptions m = new MarkerOptions().position(new LatLng(place[i].latitude,place[i].longitude)).title(place[i].title).snippet(String.format("%s,\r%s Floor\r", place[i].subtitle, place[i].floor));
         if(place[i].title.toLowerCase().contains("washroom"))
         {
+            if (place[i].title.toLowerCase().contains("gents"))
             m.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilets));
+
+            else m.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilets2));
+
+
         }
         if(place[i].title.toLowerCase().contains("water"))
         {
