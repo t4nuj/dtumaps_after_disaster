@@ -25,8 +25,21 @@
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:inputType="text"
-            android:layout_gravity="center"
+            />
+            <!--android:layout_gravity="center"-->
+            <!--/>-->
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/wash"
+            android:id="@+id/wash"
         />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/water"
+            android:id="@+id/water"/>
     </LinearLayout>
 
     <LinearLayout
@@ -91,7 +104,7 @@
         android:id="@+id/addplaces"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="+ Contribute Places"
+        android:text="@string/contribute_places"
         android:layout_gravity="bottom"
         android:background="#e02828"
         android:textColor="#ffffff"

@@ -30,7 +30,6 @@ import java.io.OutputStreamWriter;
 
 public class NewPlace extends Fragment {
 
-    //DisplayMetrics metrics; unnecessary loitering object not needed after extracting screen size changed to local variable
     int screenHeight;
     int screenWidth;
 
@@ -43,7 +42,6 @@ public class NewPlace extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_newplace, container, false);
 
-//        Log.e("lel",getArguments().getString("lat"));
         titleBox = (EditText)view.findViewById(R.id.editText2);
         subtitleBox = (EditText)view.findViewById(R.id.editText3);
         floorBox = (EditText)view.findViewById(R.id.editText4);
@@ -88,7 +86,6 @@ public class NewPlace extends Fragment {
 
 
         Bundle args = getArguments();
-//        Log.e("draglat",args.getString("lat",0));
 
         GoogleFormUploader uploader = new GoogleFormUploader("13dmvLGAKUAy-GfcZiIovrp5lEg9zgh2-mgsxP6uq5tw");
         uploader.addEntry("1500039523",title);
@@ -103,6 +100,5 @@ public class NewPlace extends Fragment {
 
         };
     }
-
 
 

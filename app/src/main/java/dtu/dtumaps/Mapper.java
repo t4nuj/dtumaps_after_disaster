@@ -46,12 +46,11 @@ import java.io.InputStream;
 public class Mapper extends Fragment {
 
     View view;
-    DisplayMetrics metrics;
     int screenHeight,screenWidth;
     FrameLayout fl;
 
     private EditText searchBox;
-    private String searchresult;
+    private String searchresult  = "";
 
     private GoogleMap dMap;
     LatLng coords = new LatLng(28.750072, 77.117730);
@@ -62,12 +61,10 @@ public class Mapper extends Fragment {
 
 
     Button addplaces;
-    EditText addTitle,addSub,addFloor,addStruct;
     LinearLayout topBox;
     Button addButton;
     String pLat,pLon;
     MarkerOptions cmark;
-    LinearLayout coverBottom;
 
     Marker drag;
 
@@ -79,6 +76,8 @@ public class Mapper extends Fragment {
     Button third_floor;
     Button clear;
     Button all;
+    Button findWR,findWC;
+    boolean isContributing;
 
 
 
@@ -91,11 +90,12 @@ public class Mapper extends Fragment {
         view = inflater.inflate(R.layout.fragment_map, null);
 
 
+        isContributing = false;
         fl = (FrameLayout)view.findViewById(R.id.fl);
         topBox = (LinearLayout)view.findViewById(R.id.topBox);
 //        coverBottom = (LinearLayout)view.findViewById(R.id.coverBottom);
 
-        metrics = new DisplayMetrics();
+        DisplayMetrics metrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         screenHeight = metrics.heightPixels;
         screenWidth = metrics.widthPixels;
@@ -105,8 +105,10 @@ public class Mapper extends Fragment {
         dMap.getUiSettings().setZoomControlsEnabled(false);
 
         searchBox = (EditText) view.findViewById(R.id.searchBox);
-        searchBox.setWidth(6 * screenWidth / 7);
+        searchBox.setWidth((int) (4.5* screenWidth / 7));
         searchBox.setHint("Search for a Place");
+//        searchBox.setPadding(((Double)(0.5*screenWidth/7)).intValue(),0, ((Double) (0.5*screenWidth/7)).intValue(), 0);
+
 
         ground_floor = (Button) view.findViewById(R.id.GroundFloor);
         first_floor = (Button) view.findViewById(R.id.FirstFloor);
@@ -114,6 +116,12 @@ public class Mapper extends Fragment {
         third_floor = (Button) view.findViewById(R.id.ThirdFloor);
         clear = (Button) view.findViewById(R.id.Clear);
         all = (Button) view.findViewById(R.id.All);
+        findWC = (Button) view.findViewById(R.id.water);
+        findWR = (Button) view.findViewById(R.id.wash);
+        findWC.setWidth((int) (0.6*screenWidth/7));
+        findWR.setWidth((int) (0.6*screenWidth/7));
+//        findWC.setPadding(((Double)(0.5*screenWidth/7)).intValue(),0, ((Double) (0.5*screenWidth/7)).intValue(), 0);
+//        findWR.setPadding(((Double)(0.5*screenWidth/7)).intValue(),0, ((Double) (0.5*screenWidth/7)).intValue(), 0);
 
         addplaces = (Button)view.findViewById(R.id.addplaces);
         addButton = new Button(getActivity());
@@ -134,6 +142,7 @@ public class Mapper extends Fragment {
                     String input,lowerTitle,lowerSubtitle;
                     input = searchBox.getText().toString().toLowerCase();
                     removeAllMarkers();
+                    searchresult = new String(input.toString());
 
                     for (int i=0; i<place.length; i++)
                     {
@@ -174,17 +183,13 @@ public class Mapper extends Fragment {
         @Override
         public void onClick(View view) {
             removeAllMarkers();
+            isContributing = true;
             cmark = new MarkerOptions().position(coords).title("Your New Marker");
             drag = dMap.addMarker(new MarkerOptions().position(coords).title("Your New Marker").draggable(true));
 
             Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Long press to reposition marker",Toast.LENGTH_SHORT);
             toast.show();
-//            initEditText();
 
-//            coverBottom.addView(addTitle);
-//            coverBottom.addView(addStruct);
-//            coverBottom.addView(addSub);
-//            coverBottom.addView(addFloor);
 
             addButton.setLayoutParams(addplaces.getLayoutParams());
             addButton.setBackgroundColor(Color.parseColor("#000000"));
@@ -224,9 +229,7 @@ public class Mapper extends Fragment {
             @Override
             public void onClick(View v) {
                 removeAllMarkers();
-                String input = searchBox.getText().toString().toLowerCase();
-                Log.d("Input string ",input);
-
+                String input = new String(searchresult.toString());
                 switch(v.getId()) {
                     case R.id.GroundFloor: {
                         for (int i = 0; i < place.length; i++) {
@@ -276,10 +279,7 @@ public class Mapper extends Fragment {
                         {
                             removeAllMarkers();
                             searchBox.setText("");
-//                            for(int i = 0 ; i < place.length; i++)
-//                            {
-//                                addMarker(i);
-//                            }
+                            searchresult = new String("");
                         }
                         break;
                     }
@@ -287,9 +287,12 @@ public class Mapper extends Fragment {
                         for(int i = 0;i < place.length;i++)
                         {
                             if(input != null && input != "" && (place[i].title.toLowerCase().contains(input) || place[i].subtitle.toLowerCase().contains(input))) addMarker(i);
-                            else if (input == null || input == "")addMarker(i);
+                            else if (input == null || input == "") addMarker(i);
                         }
+                        break;
                     }
+
+
                 }
             }
         };
@@ -300,6 +303,62 @@ public class Mapper extends Fragment {
     third_floor.setOnClickListener(floormakers);
     clear.setOnClickListener(floormakers);
     all.setOnClickListener(floormakers);
+
+    findWC.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            dMap.clear();
+            for(int i = 0; i < place.length; i++)
+            {
+                if(place[i].title.toLowerCase().contains("water cooler"))
+                {
+                    addMarker(i);
+                }
+            }
+            searchresult = new String("water cooler");
+        }
+    });
+
+    findWR.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            dMap.clear();
+            for(int i = 0; i < place.length; i++)
+            {
+                if(place[i].title.toLowerCase().contains("washroom"))
+                {
+                    addMarker(i);
+
+
+                }
+            }
+
+            searchresult = new String("washroom");
+        }
+    });
+    view.setFocusableInTouchMode(true);
+    view.setOnKeyListener(new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
+            if (i == KeyEvent.KEYCODE_BACK) {
+                if (isContributing) {
+                    addplaces = new Button(getActivity());
+                    addplaces.setLayoutParams(addButton.getLayoutParams());
+                    addplaces.setBackgroundColor(Color.parseColor("#e02828"));
+                    addplaces.setTextColor(Color.parseColor("#ffffff"));
+                    addplaces.setText(R.string.contribute_places);
+                    fl.addView(addplaces);
+                    fl.removeView(addButton);
+                    dMap.clear();
+                    isContributing = false;
+                    return true;
+                }
+
+            }
+            return false;
+        }
+    });
 
         return view;
     }
@@ -395,41 +454,7 @@ public class Mapper extends Fragment {
         dMap.clear();
     }
 
-    public void initEditText()
-    {
-        addTitle = new EditText(getActivity());
-        addSub = new EditText(getActivity());
-        addStruct = new EditText(getActivity());
-        addFloor = new EditText(getActivity());
-        addButton = new Button(getActivity());
 
-        addTitle.setLayoutParams(addplaces.getLayoutParams());
-        addTitle.setHint("Title");
-//        addTitle.setY(addplaces.getY()-500);
-
-        addSub.setLayoutParams(addplaces.getLayoutParams());
-        addSub.setHint("Subtitle");
-//        addSub.setY(addplaces.getY()-400);
-
-        addFloor.setLayoutParams(addplaces.getLayoutParams());
-        addFloor.setHint("Floor");
-//        addFloor.setY(addplaces.getY()-screenHeight/10);
-
-        addStruct.setLayoutParams(addplaces.getLayoutParams());
-        addStruct.setHint("Structure");
-//        addStruct.setY(addplaces.getY()-200);
-
-            addButton.setLayoutParams(addplaces.getLayoutParams());
-            addButton.setBackgroundColor(Color.parseColor("#000000"));
-            addButton.setTextColor(Color.parseColor("#ffffff"));
-            addButton.setText("Add Properties");
-
-    }
-
-    public String retLat()
-    {
-        return this.pLat;
-    }
 
 
 
