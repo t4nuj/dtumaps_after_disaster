@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.InflateException;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,7 @@ import java.io.InputStream;
 
 public class Mapper extends Fragment {
 
-    View view;
+    View view = null;
     int screenHeight,screenWidth;
     FrameLayout fl;
 
@@ -87,10 +88,20 @@ public class Mapper extends Fragment {
 
     @Override
      public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_map, null);
+        if (view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            if (parent != null)
+                parent.removeView(view);
+        }
 
+        try {
+            view = inflater.inflate(R.layout.fragment_map, container, false);
+        } catch (InflateException e) {
+        /* map is already there, just return view as it is */
+            return view;
+        }
 
-        isContributing = false;
+        isContributing = new Boolean(false);
         fl = (FrameLayout)view.findViewById(R.id.fl);
         topBox = (LinearLayout)view.findViewById(R.id.topBox);
 //        coverBottom = (LinearLayout)view.findViewById(R.id.coverBottom);
@@ -348,6 +359,25 @@ public class Mapper extends Fragment {
                     addplaces.setBackgroundColor(Color.parseColor("#e02828"));
                     addplaces.setTextColor(Color.parseColor("#ffffff"));
                     addplaces.setText(R.string.contribute_places);
+                    addplaces.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            removeAllMarkers();
+                            isContributing = true;
+                            cmark = new MarkerOptions().position(coords).title("Your New Marker");
+                            drag = dMap.addMarker(new MarkerOptions().position(coords).title("Your New Marker").draggable(true));
+
+                            Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Long press to reposition marker",Toast.LENGTH_SHORT);
+                            toast.show();
+
+
+                            addButton.setLayoutParams(addplaces.getLayoutParams());
+                            addButton.setBackgroundColor(Color.parseColor("#000000"));
+                            addButton.setTextColor(Color.parseColor("#ffffff"));
+                            addButton.setText("Add Properties");
+                            fl.addView(addButton);
+                        }
+                    });
                     fl.addView(addplaces);
                     fl.removeView(addButton);
                     dMap.clear();
