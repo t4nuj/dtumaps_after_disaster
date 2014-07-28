@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.makemyandroidapp.googleformuploader.GoogleFormUploader;
@@ -96,6 +97,9 @@ public class NewPlace extends Fragment {
         uploader.addEntry("296289044",name);
         uploader.addEntry("1561815213",email);
         uploader.upload();
+
+        Toast t = Toast.makeText(getActivity().getApplicationContext(),"Thanks for contributing! \\m/",Toast.LENGTH_SHORT);
+        t.show();
         getFragmentManager().beginTransaction().replace(R.id.fragmentSpace,new Mapper()).commit();
 
         };

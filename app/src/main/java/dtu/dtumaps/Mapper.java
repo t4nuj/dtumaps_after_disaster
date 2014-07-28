@@ -448,7 +448,7 @@ public class Mapper extends Fragment {
                 place[i].floor = iObject.getString("floor");
                 place[i].latitude = Double.parseDouble(iObject.getString("latitude"));
                 place[i].longitude = Double.parseDouble(iObject.getString("longitude"));
-                addMarker(i);
+//                addMarker(i);
 //                dMap.addMarker(new MarkerOptions().position(new LatLng(place[i].latitude,place[i].longitude)).title(place[i].title).snippet(String.format("%s,\n%s Floor\n",place[i].subtitle,place[i].floor)));
 
             } catch (JSONException e) {

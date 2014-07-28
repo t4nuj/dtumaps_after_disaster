@@ -2260,8 +2260,8 @@
 },
 
 {
-"title": "SC",
-"subtitle": "Smart Classrooms",
+"title": "Smart Classroom",
+"subtitle": "Smart Classroom L1 / Smart Classroom L2",
 "floor": "First",
 "type": "",
 "latitude": "28.750168193196174",
@@ -2682,7 +2682,17 @@
 "type": "",
 "latitude": "28.74981692823774",
 "longitude": "77.11827479302883"
+},
+
+{
+"title": "BR Ambedkar Auditorium",
+"subtitle": "Auditorium",
+"floor": "Ground",
+"type": "Auditorium",
+"latitude": "28.7501652537453",
+"longitude": "77.1163885295391"
 }
+
 ]
 }
 
