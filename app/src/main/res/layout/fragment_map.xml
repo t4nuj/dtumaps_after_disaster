@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+ <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id = "@+id/fl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+<fragment
+    android:id="@+id/map"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:name="com.google.android.gms.maps.MapFragment"/>
+
+
+    <LinearLayout
+        android:id="@+id/topBox"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/searchBox"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:inputType="text"
+            android:layout_gravity="center"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/topBox2"
+        android:layout_marginTop="75dp"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:id="@+id/All"
+            android:text="All"
+            />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/GroundFloor"
+            android:text="G"
+        />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/FirstFloor"
+            android:text="1"
+        />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/SecondFloor"
+            android:text="2"
+            />
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/ThirdFloor"
+            android:text="3"
+            />
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:id="@+id/Clear"
+            android:text="Clear"
+            />
+    </LinearLayout>
+
+    <!--<Button-->
+        <!--android:id="@+id/changeFragment"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:text="Set properties"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:background="#000000"-->
+        <!--android:textColor="#ffffff"-->
+
+        <!--/>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="500dp"-->
+        <!--android:id="@+id/coverBottom">-->
+    <Button
+        android:id="@+id/addplaces"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="+ Contribute Places"
+        android:layout_gravity="bottom"
+        android:background="#e02828"
+        android:textColor="#ffffff"
+        />
+    <!--</LinearLayout>-->
+
+</FrameLayout>
+

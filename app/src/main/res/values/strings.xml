@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DTU Maps</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="splash_title">DTU MAPS</string>
+    <string name="splash_developed_by">Developed By</string>
+    <string name="developers">Sidharth Raja\nSanket Kashyap\nTanuj Bhatia\nPuja Mathur\nRaghav Apoorv\nLaavanye Bahl</string>
+    <string name="sidharth">Sidharth Raja</string>
+
+</resources>
