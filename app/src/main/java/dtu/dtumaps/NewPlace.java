@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class NewPlace extends Fragment {
 
     int screenHeight;
     int screenWidth;
+    View view;
 
     private EditText titleBox,subtitleBox,floorBox,nameBox,emailBox;
     private Button submitButton;
@@ -41,7 +43,7 @@ public class NewPlace extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_newplace, container, false);
+        view = inflater.inflate(R.layout.fragment_newplace, container, false);
 
         titleBox = (EditText)view.findViewById(R.id.editText2);
         subtitleBox = (EditText)view.findViewById(R.id.editText3);
@@ -77,8 +79,22 @@ public class NewPlace extends Fragment {
 
             }
         });
+       view.setFocusable(true);
+       view.setFocusableInTouchMode(true);
+       view.requestFocus();
+       view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if (i == KeyEvent.KEYCODE_BACK)
+                {
 
+                    getFragmentManager().beginTransaction().replace(R.id.fragmentSpace,new Mapper()).commit();
+                    return false;
+                }
 
+                return false;
+            }
+        });
         return view;
     }
 

@@ -2,12 +2,11 @@ package dtu.dtumaps;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.InflateException;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,6 +21,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -30,7 +34,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,6 +71,7 @@ public class Mapper extends Fragment {
     MarkerOptions cmark;
 
     Marker drag;
+    Marker currentLocation = null;
 
     //buttons for floormarkers
 
@@ -83,6 +87,10 @@ public class Mapper extends Fragment {
 
 
     private CameraPosition collegeCenter = new CameraPosition.Builder().target(coords).zoom(17).build();
+
+    private LocationClient locationClient;
+    private LocationListener locationListener;
+    private LocationRequest locationRequest;
 
 
 
@@ -367,7 +375,7 @@ public class Mapper extends Fragment {
                             cmark = new MarkerOptions().position(coords).title("Your New Marker");
                             drag = dMap.addMarker(new MarkerOptions().position(coords).title("Your New Marker").draggable(true));
 
-                            Toast toast = Toast.makeText(getActivity().getApplicationContext(),"Long press to reposition marker",Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Long press to reposition marker", Toast.LENGTH_SHORT);
                             toast.show();
 
 
@@ -389,7 +397,34 @@ public class Mapper extends Fragment {
             return false;
         }
     });
+    locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            if(currentLocation != null) currentLocation.remove();
+            currentLocation = dMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())).snippet("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        }
 
+
+    };
+    locationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(500);
+    locationClient = new LocationClient(getActivity().getApplicationContext(),new GooglePlayServicesClient.ConnectionCallbacks() {
+        @Override
+        public void onConnected(Bundle bundle) {
+        locationClient.requestLocationUpdates(locationRequest, locationListener);
+
+        }
+
+        @Override
+        public void onDisconnected() {
+            locationClient.removeLocationUpdates(locationListener);
+        }
+    }, new GooglePlayServicesClient.OnConnectionFailedListener() {
+        @Override
+        public void onConnectionFailed(ConnectionResult connectionResult) {
+            Toast.makeText(getActivity().getApplicationContext(),"Could not connect and get Location",Toast.LENGTH_SHORT);
+        }
+    });
+    locationClient.connect();
         return view;
     }
 
