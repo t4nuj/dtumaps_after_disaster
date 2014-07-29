@@ -230,7 +230,7 @@ public class Mapper extends Fragment {
                 args.putString("lat",pLat);
                 args.putString("lon",pLon);
 
-                Fragment f = (Fragment)getFragmentManager().findFragmentById(R.id.map);
+                Fragment f = (Fragment) getFragmentManager().findFragmentById(R.id.map);
 
                 Fragment newOne = new NewPlace();
                 newOne.setArguments(args);
@@ -401,7 +401,7 @@ public class Mapper extends Fragment {
         @Override
         public void onLocationChanged(Location location) {
             if(currentLocation != null) currentLocation.remove();
-            currentLocation = dMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())).snippet("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+            currentLocation = dMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title("Your Position"));
         }
 
 
@@ -523,6 +523,10 @@ public class Mapper extends Fragment {
     public void removeAllMarkers()
     {
         dMap.clear();
+        if(currentLocation != null)
+        {
+            currentLocation = dMap.addMarker(new MarkerOptions().position(currentLocation.getPosition()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)).title(currentLocation.getTitle()));
+        }
     }
 
 
